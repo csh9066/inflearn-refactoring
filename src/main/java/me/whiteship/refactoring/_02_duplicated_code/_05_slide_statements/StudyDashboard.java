@@ -8,6 +8,14 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 코드 정리하기
+ *  - 관련있는 코드끼리 묶여있어야 코드를 더 쉽게 이해할 수 있음
+ *  - 메소드에 사용하는 모든 변수를 상단에 위로 정의 하는 경우가 있는데
+ *  읽기도 힘들고 함수 추출하기도 힘듬 관련있는 코드끼리 묶어놓자
+ *  - 변수를 사용하기전에 선언하자!
+ */
+
 public class StudyDashboard {
 
     private void printParticipants(int eventId) throws IOException {
