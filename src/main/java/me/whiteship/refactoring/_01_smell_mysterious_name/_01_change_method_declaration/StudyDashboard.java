@@ -10,13 +10,24 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class StudyDashboard {
+    public class StudyDashboard {
 
     private Set<String> usernames = new HashSet<>();
 
     private Set<String> reviews = new HashSet<>();
 
-    private void studyReviews(GHIssue issue) throws IOException {
+        /**
+         * 함수에 직접 주석을 작성한 다음 주석을 함수로 만들어 봄
+         * 적절한 이름이 생각나지 않으면 너무 많은 일을 하고 있는 함수인지 의심
+         *
+         * 스터디 리뷰에 작성 되어있는 리뷰를 읽어옴
+         * @throws IOException
+         */
+    private void loadReviews() throws IOException {
+        GitHub gitHub = GitHub.connect();
+        GHRepository repository = gitHub.getRepository("whiteship/live-study");
+        GHIssue issue = repository.getIssue(30);
+
         List<GHIssueComment> comments = issue.getComments();
         for (GHIssueComment comment : comments) {
             usernames.add(comment.getUserName());
@@ -33,12 +44,8 @@ public class StudyDashboard {
     }
 
     public static void main(String[] args) throws IOException {
-        GitHub gitHub = GitHub.connect();
-        GHRepository repository = gitHub.getRepository("whiteship/live-study");
-        GHIssue issue = repository.getIssue(30);
-
         StudyDashboard studyDashboard = new StudyDashboard();
-        studyDashboard.studyReviews(issue);
+        studyDashboard.loadReviews();
         studyDashboard.getUsernames().forEach(System.out::println);
         studyDashboard.getReviews().forEach(System.out::println);
     }
