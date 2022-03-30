@@ -17,6 +17,10 @@ public class StudyDashboard {
     private Set<String> reviews = new HashSet<>();
 
     /**
+     * 여러 함수에 걸쳐 쓰이는 필드의 변수의 이름은 정말 중요함 문맥에 맞게 올바른 변수 이름을 생각할려고 노력하자
+     * 처음부터 올바른 변수이름 짓기는 힘듬
+     * 도메인의 더 잘 이해할 수록 좋은 이름을 찾을 수 있음 거슬리는 이름이 보이면 바로 리팩토링 하자
+     *
      * 스터디 리뷰 이슈에 작성되어 있는 리뷰어 목록과 리뷰를 읽어옵니다.
      * @throws IOException
      */
@@ -25,10 +29,10 @@ public class StudyDashboard {
         GHRepository repository = gitHub.getRepository("whiteship/live-study");
         GHIssue issue = repository.getIssue(30);
 
-        List<GHIssueComment> comments = issue.getComments();
-        for (GHIssueComment comment : comments) {
-            usernames.add(comment.getUserName());
-            this.reviews.add(comment.getBody());
+        List<GHIssueComment> reviews = issue.getComments();
+        for (GHIssueComment review : reviews) {
+            usernames.add(review.getUserName());
+            this.reviews.add(review.getBody());
         }
     }
 
