@@ -12,6 +12,13 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/*
+조건문 분해하기
+- 여러 조건에 따라 달라지는 코드를 작성하면 종종 긴 함수가 작성 된다
+조건문이 어려울 수록 조건문이 많아 질 수록 안에 가독성이 많이 떨어질 수 있다.
+조건문을 함수로 분해해 읽기 좋은 코드로 만들자
+ */
+
 public class StudyDashboard {
 
     private final int totalNumberOfEvents;
@@ -62,15 +69,24 @@ public class StudyDashboard {
     }
 
     private Participant findParticipant(String username, List<Participant> participants) {
-        Participant participant;
-        if (participants.stream().noneMatch(p -> p.username().equals(username))) {
-            participant = new Participant(username);
-            participants.add(participant);
-        } else {
-            participant = participants.stream().filter(p -> p.username().equals(username)).findFirst().orElseThrow();
-        }
+        return isNewParticipant(username, participants) ?
+                createNewParticipant(username, participants) :
+                findExistingParticipant(username, participants);
+    }
 
+    private Participant findExistingParticipant(String username, List<Participant> participants) {
+        return participants.stream().filter(p -> p.username().equals(username)).findFirst().orElseThrow();
+    }
+
+    private Participant createNewParticipant(String username, List<Participant> participants) {
+        Participant participant;
+        participant = new Participant(username);
+        participants.add(participant);
         return participant;
+    }
+
+    private boolean isNewParticipant(String username, List<Participant> participants) {
+        return participants.stream().noneMatch(p -> p.username().equals(username));
     }
 
 }
