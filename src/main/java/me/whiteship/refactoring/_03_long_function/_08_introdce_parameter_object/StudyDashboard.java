@@ -15,6 +15,13 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/*
+같은 매개변수들이 여러 메소드에 걸쳐 나타나면 그 매개변수를 묶어 자료구조로 만들 수 있다
+- 해당 데이터 간의 관계를 명시적으로 나타냄
+- 함수에 전달한 매개 변수를 줄일 수 있음
+- 도메인을 이해하는데 중요한 역할을 하는 클래스로 발전할 수 있음!
+ */
+
 public class StudyDashboard {
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -72,22 +79,21 @@ public class StudyDashboard {
             writer.print(header(totalNumberOfEvents, participants.size()));
 
             participants.forEach(p -> {
-                String markdownForHomework = getMarkdownForParticipant(totalNumberOfEvents, p);
+                String markdownForHomework = getMarkdownForParticipant(new ParticipantPrinter(totalNumberOfEvents, p));
                 writer.print(markdownForHomework);
             });
         }
     }
 
-    private double getRate(int totalNumberOfEvents, Participant p) {
-        long count = p.homework().values().stream()
+    private double getRate(ParticipantPrinter participantPrinter) {
+        long count = participantPrinter.participant().homework().values().stream()
                 .filter(v -> v == true)
                 .count();
-        double rate = count * 100 / totalNumberOfEvents;
-        return rate;
+        return count * 100 / participantPrinter.totalNumberOfEvents();
     }
 
-    private String getMarkdownForParticipant(int totalNumberOfEvents, Participant p) {
-        return String.format("| %s %s | %.2f%% |\n", p.username(), checkMark(p, totalNumberOfEvents), getRate(totalNumberOfEvents, p));
+    private String getMarkdownForParticipant(ParticipantPrinter participantPrinter) {
+        return String.format("| %s %s | %.2f%% |\n", participantPrinter.participant().username(), checkMark(participantPrinter.participant(), participantPrinter.totalNumberOfEvents()), getRate(participantPrinter));
     }
 
     /**
