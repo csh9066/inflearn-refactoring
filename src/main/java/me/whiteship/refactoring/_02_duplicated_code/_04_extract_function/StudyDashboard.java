@@ -35,7 +35,7 @@ public class StudyDashboard {
         print(reviewers);
     }
     
-    
+
     //구현
     private void print(Set<String> participants) {
         participants.forEach(System.out::println);
